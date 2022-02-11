@@ -1,0 +1,10 @@
+server:
+  port: 8004
+
+#服务别名----在zookeeper注册中心注册(zookeeper服务节点是临时性的，即只要收不到节点的心跳，则剔除该节点）
+spring:
+  application:
+    name: cloud-provider-payment
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181

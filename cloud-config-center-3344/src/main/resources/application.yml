@@ -1,0 +1,39 @@
+server:
+  port: 3344
+
+
+spring:
+  application:
+    name: cloud-config-center   #注册进Eureka服务器的微服务名称
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/crystalssssssssssssssssssss/springcloud-config.git #Github上面的git仓库名
+          #搜索目录
+          search-paths:
+            - springcloud-config
+      #读取分支
+      label: master
+
+#rabbitmq相关配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+
+#rabbitmq相关配置，暴露bus刷新配置的端点
+#通过这个服务端发送 curl -X POST "http://localhost:3344/actuator/bus-refresh" 广播到每个与之关联的客户端，进行动态配置更新
+#若想定点通知某几个客户端 curl -X POST "http://localhost:3344/actuator/bus-refresh/{destination}"
+#例如只想通知3355的config客户端(destination=目的微服务名称:端口号)，curl -X POST "http://localhost:3344/actuator/bus-refresh/config-client:3355"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'bus-refresh'
